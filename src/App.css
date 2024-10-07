@@ -1,3 +1,202 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.glass-card {
+  position: relative;
+  width: 280px;
+  height: 380px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.2),
+      inset 0 0 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  animation: cardPulse 4s infinite alternate;
+}
+
+@keyframes cardPulse {
+  0% {
+    box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.2),
+      inset 0 0 15px rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.2),
+      inset 0 0 15px rgba(255, 255, 255, 0.1),
+      0 0 20px rgba(255, 255, 255, 0.5);
+  }
+}
+
+.shine-effect {
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  right: -100%;
+  bottom: -100%;
+  background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0) 70%
+  );
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.title-wrapper {
+  transform-style: preserve-3d;
+  transform: translateZ(40px);
+  z-index: 1;
+}
+
+.metallic-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(
+    90deg,
+    #ff00ff, #00ffff, #ff00ff
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  letter-spacing: 2px;
+  animation: holographicShift 5s linear infinite;
+}
+
+@keyframes holographicShift {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(180deg);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(360deg);
+  }
+}
+
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translate(calc(var(--x) - 50%), 100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(var(--x) - 50%), -100%);
+    opacity: 0;
+  }
+}
+
+.particle:nth-child(odd) {
+  animation-name: particleFloatReverse;
+}
+
+@keyframes particleFloatReverse {
+  0% {
+    transform: translate(calc(var(--x) - 50%), -100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(var(--x) - 50%), 100%);
+    opacity: 0;
+  }
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.8;
+}
+
+.blob-1 {
+  width: 400px;
+  height: 400px;
+  background: #e664e6;
+  top: 15%;
+  left: 25%;
+}
+
+.blob-2 {
+  width: 350px;
+  height: 350px;
+  background: #b076e7;
+  bottom: 15%;
+  right: 25%;
+}
+
+.blob-3 {
+  width: 300px;
+  height: 300px;
+  background: #d35fd3;
+  top: 5%;
+  right: 35%;
+}
+
+.blob-4 {
+  width: 250px;
+  height: 250px;
+  background: #c76ac7;
+  bottom: 25%;
+  left: 15%;
+}
+
 .App {
   text-align: center;
 }

@@ -1,43 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insight Engine - Interactive 3D Card</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5a9f5, #b076e7);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+        .glass-card {
+            position: relative;
+            width: 280px;
+            height: 380px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            transition: transform 0.05s ease-out;
+            transform-style: preserve-3d;
+            will-change: transform;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+        .shine-effect {
+            position: absolute;
+            top: -200%;
+            left: -200%;
+            right: -200%;
+            bottom: -200%;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(255, 255, 255, 0.6) 10%,
+                rgba(255, 255, 255, 0.4) 20%,
+                rgba(255, 255, 255, 0.2) 30%,
+                rgba(255, 255, 255, 0.1) 40%,
+                transparent 50%
+            );
+            transition: transform 0.15s ease-out;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .title-wrapper {
+            transform-style: preserve-3d;
+            transform: translateZ(20px);
+            z-index: 1;
+        }
+
+        .metallic-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(
+                90deg,
+                #91712a 0%,
+                #efd272 15%,
+                #ae8c40 30%,
+                #f4e5aa 45%,
+                #dfbb55 60%,
+                #efd272 75%,
+                #91712a 90%,
+                #efd272 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            letter-spacing: 2px;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.8;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: #e664e6;
+            top: 15%;
+            left: 25%;
+        }
+
+        .blob-2 {
+            width: 350px;
+            height: 350px;
+            background: #b076e7;
+            bottom: 15%;
+            right: 25%;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: #d35fd3;
+            top: 5%;
+            right: 35%;
+        }
+
+        .blob-4 {
+            width: 250px;
+            height: 250px;
+            background: #c76ac7;
+            bottom: 25%;
+            left: 15%;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="container">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+            <div class="blob blob-4"></div>
+            <div class="glass-card">
+                <div class="shine-effect"></div>
+                <div class="title-wrapper">
+                    <div class="metallic-title">Insight Engine</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const card = document.querySelector('.glass-card');
+        const container = document.querySelector('.container');
+        const title = document.querySelector('.metallic-title');
+        const shineEffect = document.querySelector('.shine-effect');
+
+        let currentX = 0;
+        let currentY = 0;
+        let aimX = 0;
+        let aimY = 0;
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const distanceX = e.clientX - centerX;
+            const distanceY = e.clientY - centerY;
+
+            aimX = distanceY * 0.01;
+            aimY = distanceX * -0.01;
+
+            // Update metallic effect based on mouse position
+            const percentX = (e.clientX - rect.left) / rect.width;
+            const percentY = (e.clientY - rect.top) / rect.height;
+            
+            title.style.backgroundPosition = `${(percentX * 100)}% ${(percentY * 100)}%`;
+
+            // Smooth shine effect movement
+            const angle = Math.atan2(distanceY, distanceX);
+            const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+            const normalizedDistance = Math.min(distance / (rect.width / 2), 1);
+            
+            const shineX = Math.cos(angle) * normalizedDistance * 100;
+            const shineY = Math.sin(angle) * normalizedDistance * 100;
+            
+            shineEffect.style.transform = `translate(${shineX}%, ${shineY}%)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            aimX = 0;
+            aimY = 0;
+            // Smooth transition off-card
+            shineEffect.style.transform = 'translate(-100%, -100%)';
+        });
+
+        function animate() {
+            const deltaX = aimX - currentX;
+            const deltaY = aimY - currentY;
+
+            currentX += deltaX * 0.1;
+            currentY += deltaY * 0.1;
+
+            card.style.transform = `
+                perspective(1000px)
+                rotateX(${currentX}deg)
+                rotateY(${currentY}deg)
+                translateZ(10px)
+            `;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
 </html>

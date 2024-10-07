@@ -11,7 +11,13 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// Keep the existing JavaScript
+const card = document.querySelector('.glass-card');
+const container = document.querySelector('.container');
+const title = document.querySelector('.metallic-title');
+const shineEffect = document.querySelector('.shine-effect');
+
+// ... (rest of your existing JavaScript)
+
 reportWebVitals();
+
