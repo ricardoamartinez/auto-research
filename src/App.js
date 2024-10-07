@@ -4,10 +4,12 @@ import './App.css';
 function App() {
   const cardRef = useRef(null);
   const containerRef = useRef(null);
+  const titleRef = useRef(null);
 
   useEffect(() => {
     const card = cardRef.current;
     const container = containerRef.current;
+    const title = titleRef.current;
 
     let currentX = 0;
     let currentY = 0;
@@ -24,6 +26,15 @@ function App() {
 
       aimX = distanceY * 0.01;
       aimY = distanceX * -0.01;
+
+      if (title) {
+        const rect = title.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        title.style.setProperty('--mouse-x', `${(x - 0.5) * 100}%`);
+        title.style.setProperty('--mouse-y', `${(y - 0.5) * 100}%`);
+      }
     };
 
     const handleMouseLeave = () => {
@@ -60,7 +71,7 @@ function App() {
 
   return (
     <div className="container" ref={containerRef}>
-      <h1 className="title">Insight Engine</h1>
+      <h1 className="title" ref={titleRef}>Insight Engine</h1>
       <div className="blob blob-1"></div>
       <div className="blob blob-2"></div>
       <div className="blob blob-3"></div>
